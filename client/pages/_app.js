@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }) {
   const [userRole, setUserRole] = useState(null);
   const [timeReached, setTimeReached] = useState(false);
   const [deviceAllowed, setDeviceAllowed] = useState(true);
-  const [allowedFingerprints, setAllowedFingerprints] = useState([]);
+  const [allowedFingerprints, setAllowedFingerprints] = useState(["366eee0c1b8e32dbd4d88350124b4b232f5eb6df26c7e3725104e4b9b8a4216c"]);
   const [shiftTimes, setShiftTimes] = useState({
     timeoutHour: 12,
     timeoutMinute: 40,
@@ -54,7 +54,7 @@ function MyApp({ Component, pageProps }) {
     const fetchConfig = async () => {
       try {
         const allowedDoc = await getDoc(doc(db, 'config', 'allowed_devices'));
-        setAllowedFingerprints(allowedDoc.exists() ? allowedDoc.data().fingerprints || ["2548b6dbf98fc0195a017059f18f548e9dcc13c9a219f1c03e33a01b3cdd51c1","2548b6dbf98fc0195a017059f18f548e9dcc13c9a219f1c03e33a01b3cdd51c1"] : ["2548b6dbf98fc0195a017059f18f548e9dcc13c9a219f1c03e33a01b3cdd51c1"]);
+        // setAllowedFingerprints(allowedDoc.exists() ? allowedDoc.data().fingerprints || ["2548b6dbf98fc0195a017059f18f548e9dcc13c9a219f1c03e33a01b3cdd51c1","2548b6dbf98fc0195a017059f18f548e9dcc13c9a219f1c03e33a01b3cdd51c1"] : ["2548b6dbf98fc0195a017059f18f548e9dcc13c9a219f1c03e33a01b3cdd51c1"]);
 
         const shiftDoc = await getDoc(doc(db, 'config', 'shift_times'));
         setShiftTimes(

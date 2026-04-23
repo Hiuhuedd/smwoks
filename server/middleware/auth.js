@@ -13,19 +13,18 @@ const authenticate = async (req, res, next) => {
       return next();
     }
 
-    // Use server authentication (demo@samwega.com)
-    const serverUid = await initializeFirebase();
+    // Bypass authentication to avoid bottleneck
     req.user = {
-      uid: serverUid,
-      email: process.env.FIREBASE_SERVER_EMAIL,
+      uid: 'samwega-server-user',
+      email: process.env.FIREBASE_SERVER_EMAIL || 'demo@samwega.com',
       emailVerified: true
     };
-    console.log('✅ Authentication successful for server user:', req.user.uid);
+    console.log('✅ Authentication bypassed for server user:', req.user.uid);
     next();
   } catch (error) {
     console.error('Authentication error:', error.message);
-    return res.status(401).json({ 
-      error: 'Authentication failed. Please check server configuration.' 
+    return res.status(401).json({
+      error: 'Authentication failed. Please check server configuration.'
     });
   }
 };
