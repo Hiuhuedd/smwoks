@@ -54,19 +54,19 @@ function MyApp({ Component, pageProps }) {
     const fetchConfig = async () => {
       try {
         const allowedDoc = await getDoc(doc(db, 'config', 'allowed_devices'));
-        // setAllowedFingerprints(allowedDoc.exists() ? allowedDoc.data().fingerprints || ["2548b6dbf98fc0195a017059f18f548e9dcc13c9a219f1c03e33a01b3cdd51c1","2548b6dbf98fc0195a017059f18f548e9dcc13c9a219f1c03e33a01b3cdd51c1"] : ["2548b6dbf98fc0195a017059f18f548e9dcc13c9a219f1c03e33a01b3cdd51c1"]);
+        setAllowedFingerprints(allowedDoc.exists() ? allowedDoc.data().fingerprints || ["2548b6dbf98fc0195a017059f18f548e9dcc13c9a219f1c03e33a01b3cdd51c1", "2548b6dbf98fc0195a017059f18f548e9dcc13c9a219f1c03e33a01b3cdd51c1"] : ["2548b6dbf98fc0195a017059f18f548e9dcc13c9a219f1c03e33a01b3cdd51c1"]);
 
         const shiftDoc = await getDoc(doc(db, 'config', 'shift_times'));
         setShiftTimes(
           shiftDoc.exists()
             ? shiftDoc.data()
             : {
-                timeoutHour: 12,
-                timeoutMinute: 40,
-                timeInHour: 8,
-                timeInMinute: 0,
-                lastResetDate: ''
-              }
+              timeoutHour: 12,
+              timeoutMinute: 40,
+              timeInHour: 8,
+              timeInMinute: 0,
+              lastResetDate: ''
+            }
         );
       } catch (err) {
         console.error('Error fetching Firestore config:', err);
