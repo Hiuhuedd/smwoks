@@ -17,13 +17,27 @@ const auth = getAuth(app);
 
 const initializeFirebase = async () => {
   try {
-    if (process.env.DEMO_MODE === 'true' || process.env.BYPASS_AUTH === 'true') {
-      console.log('🎭 Running in BYPASS MODE - Firebase Auth disabled');
-      return 'samwega-server-user';
+    if (process.env.DEMO_MODE === 'true') {
+      console.log('🎭 Running in DEMO MODE - Firebase disabled');
+      return;
     }
 
-    console.log('✅ Firebase Client SDK initialized (Auth bypassed)');
-    return 'samwega-server-user';
+    // Validate environment variables
+    if (!process.env.FIREBASE_SERVER_EMAIL) {
+      throw new Error('FIREBASE_SERVER_EMAIL is not set in .env');
+    }
+    if (!process.env.FIREBASE_SERVER_PASSWORD) {
+      throw new Error('FIREBASE_SERVER_PASSWORD is not set in .env');
+    }
+
+    // Sign in server as a Firebase user
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      process.env.FIREBASE_SERVER_EMAIL,
+      process.env.FIREBASE_SERVER_PASSWORD
+    );
+    console.log('✅ Firebase Client SDK initialized successfully, signed in as:', userCredential.user.email);
+    return userCredential.user.uid; // Return server UID for use in auth.js
   } catch (error) {
     console.error('❌ Firebase initialization error:', error.message);
     throw error;
